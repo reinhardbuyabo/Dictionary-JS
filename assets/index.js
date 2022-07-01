@@ -10,9 +10,7 @@ const wrapper = document.querySelector(".wrapper"),
   meaning = wrapper.querySelector(".meaning span"),
   example = wrapper.querySelector(".example span");
 
-
 let audio;
-
 // fetch api function
 function fetchApi(word) {
   infoText.style.color = "#000";
@@ -35,6 +33,7 @@ data = (res, w) => {
   if (res.resolution) {
     infoText.innerHTML = `${res.title} for <span>"${w}</span>."`;
   } else {
+    console.log(res);
     wrapper.classList.add("active");
     details.innerHTML = w;
     meaning.innerHTML = res[0].meanings[0].definitions[0].definition;
@@ -52,5 +51,11 @@ data = (res, w) => {
     });
     synonymous.append(...output);
     }
+    let audURL = res[0].phonetics[0].audio = '' ? res[0].phonetics[1].audio: res[0].phonetics[0].audio;
+    
+    audio = new Audio(audURL);
   }
+  volume.addEventListener("click", () => audio.play().catch(err => {
+    console.log(err);
+  }));
 }
